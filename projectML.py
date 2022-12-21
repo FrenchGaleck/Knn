@@ -11,7 +11,6 @@ def euclidienne(l1, l2):
     dist = 0.0
     """on va boucle pour qu'il aille dans toutes les colonnes"""
     for i in range(21):
-
         # def de la dist euclidienne
         dist = dist + pow((l1[i] - l2[i]), 2)
 
@@ -27,25 +26,27 @@ def voisin_proche(X, vecteur, k):
     j = 0
     for X_row in X.transpose():
         # on va comparer avec tout les autres vecteurs
-        dist_temp = euclidienne(vecteur,X.loc[X_row])
+        dist_temp = euclidienne(vecteur,X.iloc[X_row])
         # liste qui contiens des couples d'elem, avec comme premiere valeur le voisin, et seconde valeur la dist
         dist.append((j, X_row, dist_temp))
         j += 1
     # on trie les distances par ordre croissant
     dist.sort(key=lambda tri: tri[2])
-    # print(dist)
+    #print(dist)
     voisin = []
     # on va prendre les k plus proches voisins
     for i in range(k):
         # on va rajouter dans notre vecteur voisin le numero du voisin le i plus proche
         voisin.append(dist[i][0])
+        print(voisin)
     return voisin
 
 
 def predict(X, vecteur, k):
     voisin = voisin_proche(X, vecteur, k)
-    #print(voisin)
-    output_values = [ay[row] for row in voisin]
+    print(voisin)
+    output_values = [ytrain[row] for row in voisin]
+    #print(output_values)
     #prendra le nombre qui apparait le plus de fois
     prediction = max(set(tuple(output_values)), key=output_values.count)
     #print(prediction)
@@ -53,6 +54,7 @@ def predict(X, vecteur, k):
 wave = 'waveform.data'
 # data prends la data et la sépare a chaque fois présence d'un espace
 af = np.loadtxt(wave, delimiter=',', skiprows=0, dtype=str, usecols=range(21))
+#on utilise panda
 X = pd.DataFrame(af)
 ay = np.loadtxt(wave, delimiter=',', skiprows=0, dtype=str, usecols=[21])
 y = pd.DataFrame(ay)
@@ -71,6 +73,7 @@ Xtrain = X[0:4000]
 Xtest =X[4000:5000]
 ytrain =ay[0:4000]
 ytest =ay[4000:4999]
-#resul=predict(Xtrain,Xtest.iloc[0],1)
-#print(resul)]
-
+resul=predict(Xtrain,Xtest.iloc[2],1)
+print(resul)
+print(ytest[2])
+print(ytrain[308])

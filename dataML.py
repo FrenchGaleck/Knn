@@ -5,7 +5,6 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
-from sklearn.impute import SimpleImputer
 from projectML import euclidienne,predict,voisin_proche
 
 wave = 'waveform.data'
@@ -30,8 +29,8 @@ print(np.shape(x_pca))
 plt.figure()
 plt.scatter(x_pca[:,0],x_pca[:,1],c=y)#les deux colonnes car pca les as réduits en deux colonnes
 plt.show()
-
 """
+
 # Convert string column to float
 for i in range(21):
     X[i] = X[i].astype(float)
@@ -48,11 +47,22 @@ def bruteforce (Xtrain,Xtest,k):
     bonresul=0
     for i in range(0,100):
         resul.append(predict(Xtrain,Xtest.iloc[i],k))
+    print(resul)
     for i in range (0,100):
-        if ay[i]==resul[i] :
+        if ytest[i]==resul[i] :
             bonresul=bonresul + 1
-
     print(bonresul)
-
-
+#print(ytest[0])
 bruteforce(Xtrain,Xtest,1)
+#pour regarder avec le classifier scikit learn
+ne=KNeighborsClassifier(n_neighbors=1)
+ne=ne.fit(Xtrain,ytrain)
+pre=ne.predict(Xtest)
+#print(pre)
+bonnerep=0
+for i in range (len(ytest)):
+    if ytest[i]==pre[i] :
+        bonnerep=bonnerep+1
+    accuracy=bonnerep/len(ytest)
+#on obtient une accuracy de 76%
+#print(accuracy)
