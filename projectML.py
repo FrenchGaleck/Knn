@@ -77,3 +77,4 @@ resul=predict(Xtrain,Xtest.iloc[2],1)
 print(resul)
 print(ytest[2])
 print(ytrain[308])
+
